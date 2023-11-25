@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
-from PyQt5 import QtWidgets, QtCore, QtGui
+from ui_files import tableinsp_design, entryform_design, sqlform_design, plotform_design
 from PyQt5.QtCore import Qt, QObject
 from PyQt5.QtGui import QKeySequence, QPixmap
 from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QWidget, QPushButton, QMessageBox, QShortcut, QLabel, \
@@ -31,7 +31,7 @@ class UnknownEncodingError(Exception):
     pass
 
 
-class TableInspector(QMainWindow):
+class TableInspector(QMainWindow, tableinsp_design.Ui_MainWindow):
     """
     Основной класс. Реализует весь основной функционал и главное окно
 
@@ -72,9 +72,6 @@ class TableInspector(QMainWindow):
     ------
     initUI() :
         Инициализирует интерфейс главного окна.
-    retranslateUi() :
-        Метод, созданный автоматически при переводе ui файла в код.
-        Тоже инициализирует часть интерфейса.
     init_table() :
         После выбора режима и/или файла инициализирует таблицу.
     change_statusbar_message() :
@@ -111,9 +108,10 @@ class TableInspector(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.initUI()
+        self.setupUi(self)
+        self.init_vars()
 
-    def initUI(self):
+    def init_vars(self):
         """
         Загружаем интерфейс, затем вызываем форму, в которую загрузится путь к нужному файлу,
         после чего из класса этой формы вызовется функция init_table этого класса
@@ -130,66 +128,7 @@ class TableInspector(QMainWindow):
         self.new_file_opened = False
         self.files_opened = 0
         self.pages_count = 1
-
-        # Создание окна
-        self.setObjectName("MainWindow")
-        self.resize(996, 786)
-        self.centralwidget = QtWidgets.QWidget(self)
-        self.centralwidget.setObjectName("centralwidget")
-        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(160, 0, 831, 751))
-        self.tabWidget.setObjectName("tabWidget")
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
-        self.tableWidget = QtWidgets.QTableWidget(self.tab)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 0, 831, 731))
-        self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
-        self.tabWidget.addTab(self.tab, "")
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 20, 160, 161))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.openButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.openButton.setObjectName("openButton")
-        self.verticalLayout.addWidget(self.openButton)
-        self.addButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.addButton.setObjectName("addButton")
-        self.verticalLayout.addWidget(self.addButton)
-        self.delButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.delButton.setObjectName("delButton")
-        self.verticalLayout.addWidget(self.delButton)
-        self.plotButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.plotButton.setObjectName("plotButton")
-        self.verticalLayout.addWidget(self.plotButton)
-        self.helpButton = QtWidgets.QPushButton(self.centralwidget)
-        self.helpButton.setGeometry(QtCore.QRect(0, 720, 161, 23))
-        self.helpButton.setObjectName("helpButton")
-        self.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(self)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 996, 21))
-        self.menubar.setObjectName("menubar")
-        self.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(self)
-        self.statusbar.setObjectName("statusbar")
-        self.setStatusBar(self.statusbar)
-
-        self.retranslateUi(self)
-        self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self, MainWindow: QMainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "TIPY"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "стр. 1"))
-        self.openButton.setText(_translate("MainWindow", "Открыть"))
-        self.addButton.setText(_translate("MainWindow", "Добавить"))
-        self.delButton.setText(_translate("MainWindow", "Удалить"))
-        self.plotButton.setText(_translate("MainWindow", "Построить график"))
-        self.helpButton.setText(_translate("MainWindow", "Руководство"))
+        self.setupUi(self)
         self.helpButton.clicked.connect(self.show_instruction)
         self.openButton.clicked.connect(self.open_file)
         self.tabWidget.currentChanged.connect(self.change_statusbar_message)
@@ -511,7 +450,7 @@ class TableInspector(QMainWindow):
         os.system(command)
 
 
-class EntryForm(QDialog):
+class EntryForm(QDialog, entryform_design.Ui_entryForm):
     """
     Класс окна для выбора режима и/или файла.
 
@@ -531,11 +470,6 @@ class EntryForm(QDialog):
 
     Методы
     ------
-    initUI() :
-        Инициализирует интерфейс.
-    retranslateUi() :
-        Метод, созданный автоматически при переводе ui файла в код.
-        Тоже инициализирует часть интерфейса.
     load_path() :
         Загружает путь к файлу, с которым будет вестись работа.
         Также контролирует доступность полей для ввода информации.
@@ -548,7 +482,7 @@ class EntryForm(QDialog):
 
     def __init__(self, ref: QMainWindow):
         super().__init__()
-        self.initUI()
+        self.setupUi(self)
         self.ref = ref
         self.source = str()
         self.caller = self.sender()
@@ -556,78 +490,6 @@ class EntryForm(QDialog):
         self.buttonBox.rejected.connect(sys.exit)
         self.buttonBox.accepted.connect(self.check_input_data)
         self.modesBox.currentIndexChanged.connect(self.change_button_status)
-
-    def initUI(self):
-        """
-        Создание окна
-        """
-
-        self.setObjectName("entryForm")
-        self.resize(400, 200)
-        self.centralwidget = QtWidgets.QWidget(self)
-        self.centralwidget.setGeometry(QtCore.QRect(0, 0, 406, 191))
-        self.centralwidget.setObjectName("centralwidget")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(20, 0, 61, 16))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(300, 0, 71, 16))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.modesBox = QtWidgets.QComboBox(self.centralwidget)
-        self.modesBox.setGeometry(QtCore.QRect(10, 20, 111, 22))
-        self.modesBox.setObjectName("modesBox")
-        self.modesBox.addItem("")
-        self.modesBox.addItem("")
-        self.openDialogButton = QtWidgets.QPushButton(self.centralwidget)
-        self.openDialogButton.setGeometry(QtCore.QRect(290, 20, 91, 21))
-        self.openDialogButton.setObjectName("openDialogButton")
-        self.buttonBox = QtWidgets.QDialogButtonBox(self.centralwidget)
-        self.buttonBox.setGeometry(QtCore.QRect(240, 160, 156, 23))
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.encodingLine = QtWidgets.QLineEdit(self.centralwidget)
-        self.encodingLine.setEnabled(False)
-        self.encodingLine.setGeometry(QtCore.QRect(10, 70, 113, 20))
-        self.encodingLine.setObjectName("encodingLine")
-        self.delLine = QtWidgets.QLineEdit(self.centralwidget)
-        self.delLine.setEnabled(False)
-        self.delLine.setGeometry(QtCore.QRect(10, 120, 111, 20))
-        self.delLine.setObjectName("delLine")
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(20, 50, 81, 16))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(20, 100, 81, 16))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
-        self.statusbar = QtWidgets.QStatusBar(self)
-        self.statusbar.setGeometry(QtCore.QRect(0, 0, 3, 18))
-        self.statusbar.setObjectName("statusbar")
-
-        self.retranslateUi(self)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self, entryForm: QDialog):
-        _translate = QtCore.QCoreApplication.translate
-        entryForm.setWindowTitle(_translate("entryForm", "Entry form"))
-        self.label.setText(_translate("entryForm", "Режим:"))
-        self.label_2.setText(_translate("entryForm", "Файл / БД"))
-        self.modesBox.setItemText(0, _translate("entryForm", "Редактирование"))
-        self.modesBox.setItemText(1, _translate("entryForm", "Создание csv"))
-        self.openDialogButton.setText(_translate("entryForm", "Выбрать"))
-        self.label_3.setText(_translate("entryForm", "Кодировка:"))
-        self.label_4.setText(_translate("entryForm", "Разделитель:"))
 
     def load_path(self):
         """Загрузка пути к нужному файлу"""
@@ -697,7 +559,7 @@ class EntryForm(QDialog):
             self.delLine.setEnabled(True)
 
 
-class SQLForm(QMainWindow):
+class SQLForm(QMainWindow, sqlform_design.Ui_MainWindow):
     """
     Класс, реализующий окно для ввода SQL запроса.
 
@@ -716,11 +578,6 @@ class SQLForm(QMainWindow):
 
     Методы
     ------
-    initUI() :
-        Инициализирует интерфейс.
-    retranslateUi() :
-        Метод, созданный автоматически при переводе ui файла в код.
-        Тоже инициализирует часть интерфейса.
     send_sql_query() :
         Проверка ведённых данных на корректность и отправка SQL запроса.
     """
@@ -730,39 +587,7 @@ class SQLForm(QMainWindow):
         self.con = con
         self.cur = cur
         self.ref = ref
-        self.initUI()
-
-    def initUI(self):
-        """
-        Создание окна
-        """
-
-        self.setObjectName("MainWindow")
-        self.resize(502, 477)
-        self.centralwidget = QtWidgets.QWidget(self)
-        self.centralwidget.setObjectName("centralwidget")
-        self.sqlTextEdit = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.sqlTextEdit.setGeometry(QtCore.QRect(0, 30, 501, 401))
-        self.sqlTextEdit.setObjectName("sqlTextEdit")
-        self.enterButton = QtWidgets.QPushButton(self.centralwidget)
-        self.enterButton.setGeometry(QtCore.QRect(0, 0, 501, 23))
-        self.enterButton.setObjectName("enterButton")
-        self.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(self)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 502, 21))
-        self.menubar.setObjectName("menubar")
-        self.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(self)
-        self.statusbar.setObjectName("statusbar")
-        self.setStatusBar(self.statusbar)
-
-        self.retranslateUi(self)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self, MainWindow: QMainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SQL Form"))
-        self.enterButton.setText(_translate("MainWindow", "Ввести"))
+        self.setupUi(self)
         self.enterButton.clicked.connect(self.send_sql_query)
 
     def send_sql_query(self):
@@ -784,7 +609,7 @@ class SQLForm(QMainWindow):
         self.ref.query_sent = False
 
 
-class PlotForm(QWidget):
+class PlotForm(QWidget, plotform_design.Ui_Form):
     """
     Класс, реализующий окно для вывода графика.
 
@@ -799,11 +624,6 @@ class PlotForm(QWidget):
 
     Методы
     ------
-    initUI() :
-        Инициализирует интерфейс.
-    retranslateUi() :
-        Метод, созданный автоматически при переводе ui файла в код.
-        Тоже инициализирует часть интерфейса.
     build_plot() :
         Строит, сохраняет график, построенный по выбранным столбцам.
     show_plot() :
@@ -813,47 +633,7 @@ class PlotForm(QWidget):
     def __init__(self, ref: QMainWindow):
         super().__init__()
         self.ref = ref
-        self.initUI()
-
-    def initUI(self):
-        """
-        Создание окна
-        """
-
-        self.setObjectName("Form")
-        self.resize(400, 200)
-        self.label = QtWidgets.QLabel(self)
-        self.label.setGeometry(QtCore.QRect(0, 0, 391, 21))
-        font = QtGui.QFont()
-        font.setPointSize(9)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self)
-        self.label_2.setGeometry(QtCore.QRect(10, 50, 21, 16))
-        self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(self)
-        self.label_3.setGeometry(QtCore.QRect(10, 90, 21, 16))
-        self.label_3.setObjectName("label_3")
-        self.buttonBox = QtWidgets.QDialogButtonBox(self)
-        self.buttonBox.setGeometry(QtCore.QRect(240, 170, 156, 23))
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.axisXComboBox = QtWidgets.QComboBox(self)
-        self.axisXComboBox.setGeometry(QtCore.QRect(40, 50, 161, 22))
-        self.axisXComboBox.setObjectName("axisXComboBox")
-        self.axisYComboBox = QtWidgets.QComboBox(self)
-        self.axisYComboBox.setGeometry(QtCore.QRect(40, 90, 161, 22))
-        self.axisYComboBox.setObjectName("axisYComboBox")
-
-        self.retranslateUi(self)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self, Form: QWidget):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate("Form", "Введите названия столбцов, по которым нужно построить график"))
-        self.label_2.setText(_translate("Form", "X ="))
-        self.label_3.setText(_translate("Form", "Y = "))
+        self.setupUi(self)
         self.buttonBox.accepted.connect(self.build_plot)
         self.buttonBox.rejected.connect(self.close)
         self.curr = self.ref.tabWidget.currentWidget().children()[0]

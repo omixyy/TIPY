@@ -128,7 +128,6 @@ class TableInspector(QMainWindow, tableinsp_design.Ui_MainWindow):
         self.new_file_opened = False
         self.files_opened = 0
         self.pages_count = 1
-        self.setupUi(self)
         self.helpButton.clicked.connect(self.show_instruction)
         self.openButton.clicked.connect(self.open_file)
         self.tabWidget.currentChanged.connect(self.change_statusbar_message)

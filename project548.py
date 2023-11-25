@@ -110,6 +110,10 @@ class TableInspector(QMainWindow, tableinsp_design.Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.init_vars()
+        self.helpButton.clicked.connect(self.show_instruction)
+        self.openButton.clicked.connect(self.open_file)
+        self.tabWidget.currentChanged.connect(self.change_statusbar_message)
+        self.open_file()
 
     def init_vars(self):
         """
@@ -128,10 +132,6 @@ class TableInspector(QMainWindow, tableinsp_design.Ui_MainWindow):
         self.new_file_opened = False
         self.files_opened = 0
         self.pages_count = 1
-        self.helpButton.clicked.connect(self.show_instruction)
-        self.openButton.clicked.connect(self.open_file)
-        self.tabWidget.currentChanged.connect(self.change_statusbar_message)
-        self.open_file()
 
     def init_table(self, source: str):
         """

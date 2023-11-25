@@ -37,7 +37,7 @@ class TableInspector(QMainWindow, tableinsp_design.Ui_MainWindow):
 
     Дизайн
     ------
-    ui файлы были конвертированы в код и помещены в initUI
+    ui файлы были конвертированы в код и подключаются из ui_files
 
     Атрибуты
     ------
@@ -456,7 +456,7 @@ class EntryForm(QDialog, entryform_design.Ui_entryForm):
 
     Дизайн
     ------
-    ui файлы были конвертированы в код и помещены в initUI.
+    ui файлы были конвертированы в код и подключаются из ui_files
 
     Атрибуты
     ------
@@ -565,7 +565,7 @@ class SQLForm(QMainWindow, sqlform_design.Ui_MainWindow):
 
     Дизайн
     ------
-    ui файлы были конвертированы в код и помещены в initUI.
+    ui файлы были конвертированы в код и подключаются из ui_files
 
     Атрибуты
     ------
@@ -615,7 +615,7 @@ class PlotForm(QWidget, plotform_design.Ui_Form):
 
     Дизайн
     ------
-    ui файлы были конвертированы в код и помещены в initUI.
+    ui файлы были конвертированы в код и подключаются из ui_files
 
     Атрибуты
     ------
@@ -694,7 +694,7 @@ class PlotWindow(QMainWindow):
 
     Дизайн
     ------
-    ui файлы были конвертированы в код и помещены в initUI.
+    ui файлы были конвертированы в код и подключаются из ui_files
 
     Атрибуты
     ------
